@@ -25,6 +25,9 @@ app.use(express.json())
 
 app.use(cors())
 
+// make express show static content
+app.use(express.static('dist'))
+
 
 // request => contains all of the information of the HTTP request
 // response => used to define how the request is responded to
@@ -52,6 +55,21 @@ app.delete('/api/notes/:id', (request, response) => {
     notes = notes.filter (note => note.id !== id)
 
     response.status(204).end()
+})
+
+app.put('/api/notes/:id', (request, response) => {
+    const id = request.params.id
+    const body = request.body
+
+    if (!body.content) {
+        return response.status(400).json({
+            error: 'content missing'
+        })
+    }
+
+    notes = notes.map(note => note.id === id ? body : note)
+
+    response.json(body)
 })
 
 const generateId = () => {
