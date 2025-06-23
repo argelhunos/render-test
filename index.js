@@ -30,6 +30,9 @@ app.use(express.json())
 app.use(morgan('dev'))
 app.use(cors())
 
+// make express show static content
+app.use(express.static('dist'))
+
 app.get('/api/persons', (request, response) => {
     response.json(persons);
 })
